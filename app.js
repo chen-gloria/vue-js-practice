@@ -191,8 +191,12 @@ new Vue({
         },
 
         filters: {
-           name: ''
-        }
+           name: '',
+
+           keywords: ''
+        },
+
+        isSearching: false,
    },
 
    computed: {
@@ -216,8 +220,8 @@ new Vue({
          return this.order.dir === 1 ? 'ascending' : 'descending'
       },
 
-      whenSearching () {
-         return this.filters.name.length > 0
+      keywordsIsInvalid (){
+         return this.filters.keywords.length < 3;
       },
 
       productsFiltered() {
@@ -246,7 +250,17 @@ new Vue({
       },
 
       clearText() {
-         this.filters.name = ""
+         this.filters.name = this.filters.keywords = "";
+         this.isSearching = false;
+      },
+
+      search() {
+         if (!this.keywordsIsInvalid) {
+            this.filters.name = this.filters.keywords;
+            // Searching is happening, we're searching something
+            this.isSearching = true;
+         }
+
       }
    }
 })
