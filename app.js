@@ -197,9 +197,19 @@ new Vue({
         },
 
         isSearching: false,
+
+        perPage: 10,
+
+        currentPage: 1
    },
 
    computed: {
+      productsPaginated () {
+         let start = (this.currentPage - 1) * this.perPage
+         let end = this.currentPage * this.perPage
+         return this.productsSorted.slice(start, end);
+      },
+
       productsSorted () {
          // This means filter the product first and then sort it
          return this.productsFiltered.sort((a, b) => {
@@ -233,10 +243,38 @@ new Vue({
          }
 
          return products;
+      },
+
+      isFirstPage() {
+         return this.currentPage === 1;
+      },
+
+      isLastPage() {
+         return this.currentPage >= this.pages;
+      },
+
+      pages() {
+         return Math.ceil(this.productsFiltered.length / this.perPage);
       }
    },
 
    methods: {
+      switchPage(page) {
+         this.currentPage = page;
+      },
+
+      prev() {
+         if (!this.isFirstPage) {
+            this.currentPage--;
+         }
+      },
+
+      next() {
+         if (!this.isLastPage) {
+            this.currentPage++;
+         }
+      },
+
       classes (column) {
          return [
             'sort-control',
