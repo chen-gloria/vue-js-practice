@@ -347,6 +347,14 @@ new Vue({
          }
       },
 
+      remove (product) {
+         if (confirm("Are you sure?")) {
+            let index = this.products.findIndex(item => item.id === product.id);
+            
+            this.products.splice(index, 1); 
+         } 
+      },
+
       switchPage(page) {
          this.currentPage = page;
       },
